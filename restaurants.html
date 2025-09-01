@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Restaurants - Aurora Food Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #D14D72;
+            --secondary-color: #FFABAB;
+            --text-light: #FFF5E4;
+            --text-dark: #333;
+            --bg-light: #FFF5E4;
+            --bg-dark: #1A1A1A;
+            --card-light: #FFFFFF;
+            --card-dark: #2D2D2D;
+        }
+
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding-top: 0;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* Header and Navigation */
+        .navbar {
+            background: rgba(209, 77, 114, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .branding {
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .brand-link:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .brand-name {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Search Container */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-icon-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .search-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .search-form {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 5%;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            width: 300px;
+        }
+
+        .dark-mode .search-form {
+            background: var(--card-dark);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-form.active {
+            display: block;
+        }
+
+        .search-form input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 1rem;
+            outline: none;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .dark-mode .search-form input {
+            background: #3D3D3D;
+            border-color: #555;
+            color: white;
+        }
+
+        .search-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-options button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .search-options .cuisine-btn {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .search-options .restaurant-btn {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Nav Links */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Dropdown Styles */
+        .dropdown-container {
+            position: relative;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            top: 100%;
+            left: 0;
+            z-index: 1001;
+        }
+
+        .dark-mode .dropdown {
+            background: var(--card-dark);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown li {
+            padding: 10px 15px;
+            list-style: none;
+        }
+
+        .dropdown li a {
+            color: var(--primary-color) !important;
+            display: block;
+        }
+
+        .dark-mode .dropdown li a {
+            color: var(--secondary-color) !important;
+        }
+
+        .dropdown li:hover {
+            background: var(--secondary-color);
+        }
+
+        .dropdown li:hover a {
+            color: white !important;
+        }
+
+        .nav-links li:hover .dropdown {
+            display: block;
+        }
+
+        /* Auth Links */
+        .auth-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .login-btn, .signup-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            color: white;
+            border: 1px solid white;
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .signup-btn {
+            background: white;
+            color: var(--primary-color) !important;
+        }
+
+        .signup-btn:hover {
+            background: var(--secondary-color);
+            color: white !important;
+        }
+
+        /* Cart Icon */
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: white;
+            color: var(--primary-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .dark-mode .cart-count {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: white;
+            transition: transform 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 0;
+        }
+
+        /* Video Section Styles */
+        .video-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .video-container.active {
+            opacity: 1;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(1.1) contrast(1.1);
+        }
+
+        /* Creative Line Effects */
+        .video-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+
+        /* Horizontal Lines */
+        .line-h {
+            width: 100%;
+            height: 1px;
+            transform-origin: left;
+            animation: lineSlideRight 8s linear infinite;
+        }
+
+        .line-h:nth-child(1) { top: 25%; animation-delay: 0s; }
+        .line-h:nth-child(2) { top: 50%; animation-delay: 2s; }
+        .line-h:nth-child(3) { top: 75%; animation-delay: 4s; }
+
+        /* Vertical Lines */
+        .line-v {
+            width: 1px;
+            height: 100%;
+            animation: lineSlideDown 8s linear infinite;
+        }
+
+        .line-v:nth-child(4) { left: 33%; animation-delay: 1s; }
+        .line-v:nth-child(5) { left: 66%; animation-delay: 3s; }
+
+        /* Progress Indicator */
+        .video-progress {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Video Navigation */
+        .video-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            z-index: 3;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-section:hover .video-nav {
+            opacity: 1;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        @keyframes lineSlideRight {
+            0% {
+                transform: translateX(-100%) scaleX(0);
+                opacity: 0;
+            }
+            20% {
+                transform: translateX(-80%) scaleX(1);
+                opacity: 1;
+            }
+            80% {
+                transform: translateX(80%) scaleX(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(100%) scaleX(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes lineSlideDown {
+            0% {
+                transform: translateY(-100%) scaleY(0);
+                opacity: 0;
+            }
+            20% {
+                transform: translateY(-80%) scaleY(1);
+                opacity: 1;
+            }
+            80% {
+                transform: translateY(80%) scaleY(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100%) scaleY(0);
+                opacity: 0;
+            }
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--card-light);
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .section {
+            background: var(--card-dark);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .dark-mode .section h2 {
+            color: var(--secondary-color);
+        }
+
+        /* Innovative Restaurant Card Styles */
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .restaurant-card {
+            position: relative;
+            background: var(--card-light);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .dark-mode .restaurant-card {
+            background: var(--card-dark);
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 30px rgba(209, 77, 114, 0.2);
+        }
+
+        .restaurant-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .restaurant-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .restaurant-card:hover .restaurant-image {
+            transform: scale(1.1);
+        }
+
+        .restaurant-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .restaurant-card:hover .restaurant-overlay {
+            opacity: 1;
+        }
+
+        .restaurant-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+
+        .restaurant-card:hover .action-btn {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1) !important;
+        }
+
+        .action-btn.favorite.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .restaurant-info {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .restaurant-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            background: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .restaurant-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .dark-mode .restaurant-name {
+            color: var(--text-light);
+        }
+
+        .restaurant-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .rating {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .order-btn {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.8rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .restaurant-card:hover .order-btn {
+            bottom: 20px;
+            opacity: 1;
+        }
+
+        .order-btn:hover {
+            background: var(--secondary-color);
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        /* Restaurant Filters */
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--primary-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+            z-index: -1;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: white;
+        }
+
+        /* Favorites Section */
+        .favorites-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--card-light);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .dark-mode .favorites-drawer {
+            background: var(--card-dark);
+        }
+
+        .favorites-drawer.open {
+            right: 0;
+        }
+
+        .favorites-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .favorites-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-favorites {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .favorites-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .favorite-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .favorite-item:hover {
+            transform: scale(1.02);
+        }
+
+        .favorite-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .favorite-info {
+            flex: 1;
+        }
+
+        .favorite-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .favorite-meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .remove-favorite {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem 5%;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .search-container {
+                margin-left: 0;
+            }
+            
+            .search-form {
+                right: 50%;
+                transform: translateX(50%);
+                width: 90%;
+                max-width: 400px;
+            }
+            
+            .auth-links {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .login-btn, .signup-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: var(--card-light);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .filters-section {
+            background: var(--card-dark);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .filter-group h3 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Cuisine Categories */
+        .cuisine-categories {
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+
+        .cuisine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .cuisine-card {
+            position: relative;
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        .cuisine-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cuisine-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-color), transparent);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .cuisine-card:hover::before {
+            opacity: 0.6;
+        }
+
+        .cuisine-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .cuisine-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .cuisine-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            transform: translateY(100%);
+            transition: all 0.5s ease;
+        }
+
+        .cuisine-card:hover .cuisine-overlay {
+            transform: translateY(0);
+        }
+
+        .cuisine-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: white;
+            opacity: 0;
+            transform: rotate(-45deg);
+            transition: all 0.5s ease;
+        }
+
+        .cuisine-card:hover .cuisine-icon {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        .cuisine-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .cuisine-count {
+            font-size: 1rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cuisine-count i {
+            color: var(--secondary-color);
+        }
+
+        .cuisine-description {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.2s;
+        }
+
+        .cuisine-card:hover .cuisine-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .cuisine-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="branding">
+                <a href="index.html" class="brand-link">
+                    <img src="https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Aurora Logo" class="logo-icon" />
+                    <span class="brand-name">Aurora</span>
+                </a>
+            </div>
+            
+            <div class="nav-container">
+                <div class="search-container">
+                    <button class="search-icon-btn" id="search-toggle-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <form class="search-form" id="search-form">
+                        <input type="text" id="search-input" placeholder="What are you craving for?" />
+                        <div class="search-options">
+                            <button type="button" class="cuisine-btn" id="cuisine-search-btn">
+                                <i class="fas fa-utensils"></i> Cuisines
+                            </button>
+                            <button type="button" class="restaurant-btn" id="restaurant-search-btn">
+                                <i class="fas fa-store"></i> Restaurants
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="video-section">
+        <div class="video-container active" data-index="0">
+            <video autoplay muted loop playsinline>
+                <source src="C:\Users\Dell\Downloads\7673412-hd_1920_1080_25fps.mp4" type="video/mp4">
+            </video>
+            <div class="video-lines">
+                <div class="line line-h"></div>
+                <div class="line line-h"></div>
+                <div class="line line-h"></div>
+                <div class="line line-v"></div>
+                <div class="line line-v"></div>
+            </div>
+        </div>
+        <div class="video-container" data-index="1">
+            <video autoplay muted loop playsinline>
+                <source src="C:\Users\Dell\Downloads\5332658-uhd_4096_2160_30fps.mp4" type="video/mp4">
+            </video>
+            <div class="video-lines">
+                <div class="line line-h"></div>
+                <div class="line line-h"></div>
+                <div class="line line-h"></div>
+                <div class="line line-v"></div>
+                <div class="line line-v"></div>
+            </div>
+        </div>
+        <div class="video-container" data-index="2">
+            <video autoplay muted loop playsinline>
+                <source src="C:\Users\Dell\Downloads\4170500-uhd_3840_2160_25fps.mp4" type="video/mp4">
+            </video>
+            <div class="video-lines">
+                <div class="line line-h"></div>
+                <div class="line line-h"></div>
+                <div class="line line-h"></div>
+                <div class="line line-v"></div>
+                <div class="line line-v"></div>
+            </div>
+        </div>
+
+        <div class="video-nav">
+            <button class="nav-btn prev-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="nav-btn next-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <div class="video-progress">
+            <div class="progress-dot active" data-index="0"></div>
+            <div class="progress-dot" data-index="1"></div>
+            <div class="progress-dot" data-index="2"></div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <section class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <h3>Sort By</h3>
+                    <div class="filter-options">
+                        <button class="filter-btn active">Popularity</button>
+                        <button class="filter-btn">Rating</button>
+                        <button class="filter-btn">Delivery Time</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3>Dietary</h3>
+                    <div class="filter-options">
+                        <button class="filter-btn">Veg</button>
+                        <button class="filter-btn">Non-Veg</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h3>Offers</h3>
+                    <div class="filter-options">
+                        <button class="filter-btn">Bestsellers</button>
+                        <button class="filter-btn">Special Deals</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cuisine-categories">
+            <h2>Popular Cuisines</h2>
+            <div class="cuisine-grid">
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/1146760/pexels-photo-1146760.jpeg" alt="Italian">
+                    <i class="cuisine-icon fas fa-pizza-slice"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Italian</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>50+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Authentic pizzas, pasta, and more from the heart of Italy
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg" alt="Indian">
+                    <i class="cuisine-icon fas fa-pepper-hot"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Indian</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>45+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Spicy curries, tandoori specialties, and aromatic biryanis
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/1199960/pexels-photo-1199960.jpeg" alt="Chinese">
+                    <i class="cuisine-icon fas fa-utensils"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Chinese</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>40+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Delicious dim sum, noodles, and authentic Chinese dishes
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/2087748/pexels-photo-2087748.jpeg" alt="Mexican">
+                    <i class="cuisine-icon fas fa-hat-cowboy"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Mexican</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>35+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Tacos, burritos, and authentic Mexican street food
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/2098085/pexels-photo-2098085.jpeg" alt="Japanese">
+                    <i class="cuisine-icon fas fa-fish"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Japanese</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>30+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Fresh sushi, ramen, and traditional Japanese dishes
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg" alt="Thai">
+                    <i class="cuisine-icon fas fa-leaf"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Thai</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>25+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Spicy curries, pad thai, and authentic Thai street food
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg" alt="Mediterranean">
+                    <i class="cuisine-icon fas fa-seedling"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Mediterranean</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>20+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Healthy and delicious Mediterranean specialties
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/2641886/pexels-photo-2641886.jpeg" alt="Korean">
+                    <i class="cuisine-icon fas fa-fire"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Korean</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>15+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Korean BBQ, bibimbap, and authentic Korean dishes
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/2664216/pexels-photo-2664216.jpeg" alt="Vietnamese">
+                    <i class="cuisine-icon fas fa-bowl-rice"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Vietnamese</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>18+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Fresh pho, banh mi, and authentic Vietnamese street food
+                        </div>
+                    </div>
+                </div>
+                <div class="cuisine-card">
+                    <img src="https://images.pexels.com/photos/7426864/pexels-photo-7426864.jpeg" alt="Middle Eastern">
+                    <i class="cuisine-icon fas fa-mosque"></i>
+                    <div class="cuisine-overlay">
+                        <div class="cuisine-name">Middle Eastern</div>
+                        <div class="cuisine-count">
+                            <i class="fas fa-store"></i>
+                            <span>22+ Restaurants</span>
+                        </div>
+                        <div class="cuisine-description">
+                            Delicious shawarma, falafel, and authentic kebabs
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Our Partner Restaurants</h2>
+            <div class="restaurant-grid" id="restaurant-grid">
+                <!-- Restaurant cards will be populated here by JavaScript -->
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 Aurora Food Delivery. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoContainers = document.querySelectorAll('.video-container');
+            const progressDots = document.querySelectorAll('.progress-dot');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentIndex = 0;
+            let isTransitioning = false;
+
+            // Initialize all videos
+            videoContainers.forEach(container => {
+                const video = container.querySelector('video');
+                video.play().catch(error => console.log("Video autoplay failed:", error));
+            });
+
+            function showVideo(index) {
+                if (isTransitioning) return;
+                isTransitioning = true;
+
+                // Update active states
+                videoContainers.forEach(container => container.classList.remove('active'));
+                progressDots.forEach(dot => dot.classList.remove('active'));
+
+                videoContainers[index].classList.add('active');
+                progressDots[index].classList.add('active');
+
+                // Reset transition lock after animation completes
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 1500);
+            }
+
+            // Auto-advance videos
+            function autoAdvance() {
+                currentIndex = (currentIndex + 1) % videoContainers.length;
+                showVideo(currentIndex);
+            }
+            let autoAdvanceInterval = setInterval(autoAdvance, 8000);
+
+            // Navigation button handlers
+            prevBtn.addEventListener('click', () => {
+                clearInterval(autoAdvanceInterval);
+                currentIndex = (currentIndex - 1 + videoContainers.length) % videoContainers.length;
+                showVideo(currentIndex);
+                autoAdvanceInterval = setInterval(autoAdvance, 8000);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                clearInterval(autoAdvanceInterval);
+                currentIndex = (currentIndex + 1) % videoContainers.length;
+                showVideo(currentIndex);
+                autoAdvanceInterval = setInterval(autoAdvance, 8000);
+            });
+
+            // Progress dot handlers
+            progressDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    clearInterval(autoAdvanceInterval);
+                    currentIndex = parseInt(dot.dataset.index);
+                    showVideo(currentIndex);
+                    autoAdvanceInterval = setInterval(autoAdvance, 8000);
+                });
+            });
+        });
+    </script>
+
+    <!-- Add Favorites Drawer -->
+    <div class="favorites-drawer">
+        <div class="favorites-header">
+            <h3 class="favorites-title">My Favorites</h3>
+            <button class="close-favorites">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="favorites-list">
+            <!-- Favorites will be populated here -->
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Update Restaurant Section -->
+    <section class="section">
+        <div class="filter-container">
+            <div class="filter-group">
+                <span class="filter-label">Sort By:</span>
+                <div class="filter-options">
+                    <button class="filter-btn active" data-sort="rating">Rating</button>
+                    <button class="filter-btn" data-sort="delivery">Delivery Time</button>
+                    <button class="filter-btn" data-sort="popularity">Popularity</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Cuisine:</span>
+                <div class="filter-options">
+                    <button class="filter-btn" data-cuisine="all">All</button>
+                    <button class="filter-btn" data-cuisine="italian">Italian</button>
+                    <button class="filter-btn" data-cuisine="indian">Indian</button>
+                    <button class="filter-btn" data-cuisine="chinese">Chinese</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Dietary:</span>
+                <div class="filter-options">
+                    <button class="filter-btn" data-dietary="all">All</button>
+                    <button class="filter-btn" data-dietary="veg">Veg</button>
+                    <button class="filter-btn" data-dietary="non-veg">Non-Veg</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="restaurant-grid" id="restaurant-grid">
+            <!-- Restaurant cards will be populated here -->
+        </div>
+    </section>
+
+    <script>
+        // Restaurant data structure
+        const restaurants = [
+            {
+                id: 1,
+                name: "Pizza Hut",
+                image: "https://images.pexels.com/photos/1146760/pexels-photo-1146760.jpeg",
+                cuisines: ["Italian", "Pizza", "Fast Food"],
+                rating: 4.3,
+                deliveryTime: "30-35",
+                isVeg: false,
+                tags: ["Bestseller", "Great Offers"]
+            },
+            {
+                id: 2,
+                name: "Dragon Wok",
+                image: "https://images.pexels.com/photos/2347311/pexels-photo-2347311.jpeg",
+                cuisines: ["Chinese", "Asian"],
+                rating: 4.5,
+                deliveryTime: "25-30",
+                isVeg: true,
+                tags: ["Healthy", "Authentic"]
+            },
+            // Add more restaurants as needed
+        ];
+
+        // Initialize favorites from localStorage
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+        function createRestaurantCard(restaurant) {
+            const card = document.createElement('div');
+            card.className = 'restaurant-card';
+            card.innerHTML = `
+                <div class="restaurant-image-container">
+                    <img src="${restaurant.image}" alt="${restaurant.name}" class="restaurant-image">
+                    <div class="restaurant-overlay"></div>
+                    <div class="restaurant-actions">
+                        <button class="action-btn favorite ${favorites.includes(restaurant.id) ? 'active' : ''}" data-id="${restaurant.id}">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button class="action-btn share">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="restaurant-info">
+                    <div class="restaurant-tags">
+                        ${restaurant.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <h3 class="restaurant-name">${restaurant.name}</h3>
+                    <p class="restaurant-cuisine">${restaurant.cuisines.join(', ')}</p>
+                    <div class="restaurant-meta">
+                        <span class="meta-item rating">
+                            <i class="fas fa-star"></i>
+                            ${restaurant.rating}
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            ${restaurant.deliveryTime} mins
+                        </span>
+                        <span class="meta-item">
+                            <i class="fas ${restaurant.isVeg ? 'fa-leaf' : 'fa-drumstick-bite'}"></i>
+                            ${restaurant.isVeg ? 'Veg' : 'Non-Veg'}
+                        </span>
+                    </div>
+                    <button class="order-btn">Order Now</button>
+                </div>
+            `;
+
+            // Add event listeners
+            const favoriteBtn = card.querySelector('.favorite');
+            favoriteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleFavorite(restaurant);
+            });
+
+            const shareBtn = card.querySelector('.share');
+            shareBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                shareRestaurant(restaurant);
+            });
+
+            const orderBtn = card.querySelector('.order-btn');
+            orderBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.location.href = `restaurant-detail.html?id=${restaurant.id}`;
+            });
+
+            return card;
+        }
+
+        function toggleFavorite(restaurant) {
+            const index = favorites.indexOf(restaurant.id);
+            if (index === -1) {
+                favorites.push(restaurant.id);
+                showToast(`Added ${restaurant.name} to favorites`);
+            } else {
+                favorites.splice(index, 1);
+                showToast(`Removed ${restaurant.name} from favorites`);
+            }
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavorites();
+            updateRestaurantGrid();
+        }
+
+        function shareRestaurant(restaurant) {
+            if (navigator.share) {
+                navigator.share({
+                    title: restaurant.name,
+                    text: `Check out ${restaurant.name} on our food delivery app!`,
+                    url: `restaurant-detail.html?id=${restaurant.id}`
+                }).catch(console.error);
+            } else {
+                showToast('Sharing is not supported on this device');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateFavorites() {
+            const favoritesList = document.querySelector('.favorites-list');
+            favoritesList.innerHTML = '';
+            
+            const favoriteRestaurants = restaurants.filter(r => favorites.includes(r.id));
+            favoriteRestaurants.forEach(restaurant => {
+                const item = document.createElement('div');
+                item.className = 'favorite-item';
+                item.innerHTML = `
+                    <img src="${restaurant.image}" alt="${restaurant.name}" class="favorite-img">
+                    <div class="favorite-info">
+                        <div class="favorite-name">${restaurant.name}</div>
+                        <div class="favorite-meta">
+                            <span><i class="fas fa-star"></i> ${restaurant.rating}</span>
+                            <span><i class="fas fa-clock"></i> ${restaurant.deliveryTime} mins</span>
+                        </div>
+                    </div>
+                    <button class="remove-favorite" data-id="${restaurant.id}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+
+                item.querySelector('.remove-favorite').addEventListener('click', () => {
+                    toggleFavorite(restaurant);
+                });
+
+                favoritesList.appendChild(item);
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateRestaurantGrid();
+            updateFavorites();
+
+            // Favorites drawer toggle
+            const favoritesDrawer = document.querySelector('.favorites-drawer');
+            document.querySelector('.close-favorites').addEventListener('click', () => {
+                favoritesDrawer.classList.remove('open');
+            });
+
+            // Filter functionality
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const group = btn.closest('.filter-options');
+                    group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    updateRestaurantGrid();
+                });
+            });
+        });
+
+        function updateRestaurantGrid() {
+            const grid = document.getElementById('restaurant-grid');
+            grid.innerHTML = '';
+            
+            // Get active filters
+            const activeSort = document.querySelector('.filter-btn[data-sort].active').dataset.sort;
+            const activeCuisine = document.querySelector('.filter-btn[data-cuisine].active')?.dataset.cuisine;
+            const activeDietary = document.querySelector('.filter-btn[data-dietary].active')?.dataset.dietary;
+
+            // Filter and sort restaurants
+            let filteredRestaurants = [...restaurants];
+            
+            if (activeCuisine && activeCuisine !== 'all') {
+                filteredRestaurants = filteredRestaurants.filter(r => 
+                    r.cuisines.some(c => c.toLowerCase() === activeCuisine.toLowerCase())
+                );
+            }
+
+            if (activeDietary && activeDietary !== 'all') {
+                filteredRestaurants = filteredRestaurants.filter(r => 
+                    activeDietary === 'veg' ? r.isVeg : !r.isVeg
+                );
+            }
+
+            // Sort restaurants
+            filteredRestaurants.sort((a, b) => {
+                switch (activeSort) {
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'delivery':
+                        return parseInt(a.deliveryTime) - parseInt(b.deliveryTime);
+                    case 'popularity':
+                        return favorites.includes(b.id) - favorites.includes(a.id);
+                    default:
+                        return 0;
+                }
+            });
+
+            // Create and append restaurant cards
+            filteredRestaurants.forEach(restaurant => {
+                grid.appendChild(createRestaurantCard(restaurant));
+            });
+        }
+    </script>
+</body>
+</html> 

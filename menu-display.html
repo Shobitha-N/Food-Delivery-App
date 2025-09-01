@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu - Aurora Food Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            padding: 2rem 5%;
+        }
+
+        .restaurant-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .restaurant-name {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .restaurant-info {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-image {
+            position: relative;
+            padding-top: 75%;
+            overflow: hidden;
+        }
+
+        .menu-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .menu-info {
+            padding: 1.5rem;
+        }
+
+        .menu-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .menu-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff3366;
+            margin-bottom: 1rem;
+        }
+
+        .menu-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-badge {
+            padding: 0.25rem 0.75rem;
+            background: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 2px solid #ff3366;
+            color: #ff3366;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #ff3366;
+            color: white;
+        }
+
+        .veg-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: white;
+            padding: 0.25rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .veg-icon {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #00b300;
+            border-radius: 2px;
+        }
+
+        .veg-icon::after {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background: #00b300;
+            border-radius: 50%;
+            margin: 2px;
+        }
+
+        .non-veg-icon {
+            width: 12px;
+            height: 12px;
+            border: 1px solid #ff0000;
+            border-radius: 2px;
+        }
+
+        .non-veg-icon::after {
+            content: '';
+            display: block;
+            width: 6px;
+            height: 6px;
+            background: #ff0000;
+            border-radius: 50%;
+            margin: 2px;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            color: #666;
+            cursor: pointer;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: #333;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .menu-count {
+            color: #666;
+        }
+
+        .menu-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .view-btn.active {
+            background: #ff3366;
+            color: white;
+            border-color: #ff3366;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            position: relative;
+            padding-top: 75%;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #ff3366;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .product-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #666;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #ff3366;
+            color: white;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+        }
+
+        .rating-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .current-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .original-price {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 0.9rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 2px solid #ff3366;
+            color: #ff3366;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #ff3366;
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .menu-container {
+                flex-direction: column;
+            }
+
+            .filter-sidebar {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .menu-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .menu-controls {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Video Section Styles */
+        .video-section {
+            margin: 2rem 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            padding: 1rem;
+            color: white;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .video-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="restaurant-header">
+        <h1 class="restaurant-name">La Piazza Italian Restaurant</h1>
+        <p class="restaurant-info">Italian • Pizza • Pasta • 4.5 ★ • 25-30 mins</p>
+    </div>
+
+    <!-- Video Section -->
+    <div class="video-section">
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c0fd273d2c6d9a064f3ae35579b2bbdf&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+                <div class="video-title">Our Kitchen in Action</div>
+                <div class="video-description">Watch our chefs prepare authentic Italian dishes</div>
+            </div>
+        </div>
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="https://player.vimeo.com/external/403274013.sd.mp4?s=1b8c349d2c033a869348de81ca21a03b3cd2c5e7&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+                <div class="video-title">Signature Pizza Making</div>
+                <div class="video-description">Experience the art of perfect pizza making</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-grid">
+        <!-- Menu Item 1 -->
+        <div class="menu-item">
+            <div class="menu-image">
+                <img src="https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg" alt="Margherita Pizza">
+                <div class="veg-badge">
+                    <div class="veg-icon"></div>
+                    <span>Veg</span>
+                </div>
+            </div>
+            <div class="menu-info">
+                <h3 class="menu-name">Margherita Pizza</h3>
+                <p class="menu-description">Fresh tomatoes, mozzarella cheese, basil leaves, olive oil, and our special pizza sauce</p>
+                <div class="menu-price">₹299</div>
+                <div class="menu-options">
+                    <span class="option-badge">Size Options</span>
+                    <span class="option-badge">Extra Cheese</span>
+                    <span class="option-badge">Toppings</span>
+                </div>
+                <button class="add-to-cart">ADD TO CART</button>
+            </div>
+        </div>
+
+        <!-- Menu Item 2 -->
+        <div class="menu-item">
+            <div class="menu-image">
+                <img src="https://images.pexels.com/photos/1527603/pexels-photo-1527603.jpeg" alt="Spaghetti Carbonara">
+                <div class="veg-badge">
+                    <div class="non-veg-icon"></div>
+                    <span>Non-veg</span>
+                </div>
+            </div>
+            <div class="menu-info">
+                <h3 class="menu-name">Spaghetti Carbonara</h3>
+                <p class="menu-description">Classic carbonara with eggs, pecorino cheese, guanciale, and black pepper</p>
+                <div class="menu-price">₹349</div>
+                <div class="menu-options">
+                    <span class="option-badge">Spice Level</span>
+                    <span class="option-badge">Extra Cheese</span>
+                </div>
+                <button class="add-to-cart">ADD TO CART</button>
+            </div>
+        </div>
+
+        <!-- Menu Item 3 -->
+        <div class="menu-item">
+            <div class="menu-image">
+                <img src="https://images.pexels.com/photos/1438672/pexels-photo-1438672.jpeg" alt="Garlic Bread">
+                <div class="veg-badge">
+                    <div class="veg-icon"></div>
+                    <span>Veg</span>
+                </div>
+            </div>
+            <div class="menu-info">
+                <h3 class="menu-name">Garlic Bread</h3>
+                <p class="menu-description">Freshly baked bread with garlic butter and herbs</p>
+                <div class="menu-price">₹149</div>
+                <div class="menu-options">
+                    <span class="option-badge">Extra Cheese</span>
+                    <span class="option-badge">Add Herbs</span>
+                </div>
+                <button class="add-to-cart">ADD TO CART</button>
+            </div>
+        </div>
+
+        <!-- Menu Item 4 -->
+        <div class="menu-item">
+            <div class="menu-image">
+                <img src="https://images.pexels.com/photos/6163263/pexels-photo-6163263.jpeg" alt="Tiramisu">
+                <div class="veg-badge">
+                    <div class="veg-icon"></div>
+                    <span>Veg</span>
+                </div>
+            </div>
+            <div class="menu-info">
+                <h3 class="menu-name">Tiramisu</h3>
+                <p class="menu-description">Classic Italian dessert with coffee-soaked ladyfingers and mascarpone cream</p>
+                <div class="menu-price">₹249</div>
+                <div class="menu-options">
+                    <span class="option-badge">Extra Coffee</span>
+                    <span class="option-badge">Add Chocolate</span>
+                </div>
+                <button class="add-to-cart">ADD TO CART</button>
+            </div>
+        </div>
+
+        <!-- Menu Item 5 -->
+        <div class="menu-item">
+            <div class="menu-image">
+                <img src="https://images.pexels.com/photos/4109111/pexels-photo-4109111.jpeg" alt="Pepperoni Pizza">
+                <div class="veg-badge">
+                    <div class="non-veg-icon"></div>
+                    <span>Non-veg</span>
+                </div>
+            </div>
+            <div class="menu-info">
+                <h3 class="menu-name">Pepperoni Pizza</h3>
+                <p class="menu-description">Classic pepperoni with mozzarella cheese and pizza sauce</p>
+                <div class="menu-price">₹399</div>
+                <div class="menu-options">
+                    <span class="option-badge">Size Options</span>
+                    <span class="option-badge">Extra Cheese</span>
+                    <span class="option-badge">Extra Pepperoni</span>
+                </div>
+                <button class="add-to-cart">ADD TO CART</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add to Cart Animation
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.style.background = '#ff3366';
+                button.style.color = 'white';
+                button.textContent = 'ADDED TO CART';
+                
+                setTimeout(() => {
+                    button.style.background = 'transparent';
+                    button.style.color = '#ff3366';
+                    button.textContent = 'ADD TO CART';
+                }, 2000);
+            });
+        });
+
+        // Make menu items clickable
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Prevent click when clicking the add to cart button
+                if (!e.target.classList.contains('add-to-cart')) {
+                    // Here you can add modal or navigation logic
+                    console.log('Menu item clicked:', item.querySelector('.menu-name').textContent);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

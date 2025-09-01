@@ -18,7 +18,14 @@ Aurora is a modern, AI-powered food ordering platform designed to enhance the on
 ## Tech Stack
 
 - **Frontend:** HTML, CSS, JavaScript, React  
-- **Backend:** Node.js (or your backend if different)  
-- **Database:** MongoDB / MySQL (update as per your project)  
+- **Backend:** Node.js  
+- **Database:** MongoDB / MySQL  
 - **AI Integration:** Voice assistant powered by AI APIs  
 - **Tools & Utilities:** VS Code, Git, GitHub, BrowserStack  
+
+---
+
+## Screenshots
+
+![Aurora Screenshot](https://github.com/Shobitha-N/Food-Delivery-App/blob/main/Screenshot%202025-07-22%20112256.png?raw=true)
+
